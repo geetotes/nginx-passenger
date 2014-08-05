@@ -1,0 +1,31 @@
+---
+- name: Remove apache2
+  yum: name=apache2 state=absent
+  sudo: True
+  tags: install
+
+- name: Remove nginx
+  yum: name=nginx state=absent
+  sudo: True
+  tags: install
+
+  
+- name: Install rubygems,  nginx
+  action: yum pkg={{ item }} state=installed
+  sudo: True
+  with_items:
+   - rubygems
+   - nginx 
+  tags: install
+
+
+- name: Install passenger via gem
+  command: gem install passenger
+  tags: install
+
+
+- name: Configure nginx
+  tags: configure
+
+- name: Start passenger standalone via script 
+
