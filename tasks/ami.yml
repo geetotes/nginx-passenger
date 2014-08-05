@@ -24,8 +24,30 @@
   tags: install
 
 
-- name: Configure nginx
+- name: Copy nginx configuration
+  copy:
+    src=nginx.conf
+    dest=/etc/nginx/nginx.conf
+    owner=root
+    group=root
+    mode=0644
+    backup=yes
+  sudo: True
   tags: configure
 
+
+- name: Copy passenger start script
+  copy:
+    src=standalone-start.sh
+    dest=/home/ec2-user/standalone-start.sh
+    mode=0744
+
 - name: Start passenger standalone via script 
+  command: /home/ec2-user/standalone-start.sh
+  tags: configure
+
+
+- name: Start nginx
+  service: name=nginx state=restarted
+  tags: configure
 
